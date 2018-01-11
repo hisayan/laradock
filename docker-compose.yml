@@ -57,7 +57,9 @@ services:
       # hot (HMR) のために
       # -i しないと .bashrc を読み込まず、npm がみつからないエラーになる
       # FIXME: この起動方法だと、docker-compose logs がこれに支配されている気がする
-      command: bash -c -i "npm run hot -- --host 0.0.0.0 --watch-poll"
+      # TODO: .env用 $ php artisan key:generate を自動化すべきか。美しい方法がないか、再検討。
+      #    これ、composer install か、どこかが、毎回時間がかかっている気がする
+      command: bash -c -i "composer install && cp .env.example .env && php artisan key:generate && npm install && npm run hot -- --host 0.0.0.0 --watch-poll"
       ports:
         - "${WORKSPACE_SSH_PORT}:22"
         # for hot (HMR)
